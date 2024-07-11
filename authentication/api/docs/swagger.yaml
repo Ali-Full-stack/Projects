@@ -1,0 +1,56 @@
+definitions:
+  model.UserRequest:
+    properties:
+      code:
+        type: integer
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  model.UserResponse:
+    properties:
+      code:
+        type: integer
+      status:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: 'This swagger UI : Authenticate New User'
+  title: 'Project: AUTHENTICATION'
+  version: "1.0"
+paths:
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint registers a new user
+      parameters:
+      - description: UserRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserResponse'
+        "400":
+          description: Invalid request
+          schema: {}
+        "500":
+          description: Request Denied !
+          schema: {}
+      summary: Register New User
+      tags:
+      - AUTH
+swagger: "2.0"
