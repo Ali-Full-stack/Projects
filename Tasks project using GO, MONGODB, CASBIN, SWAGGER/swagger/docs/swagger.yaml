@@ -1,0 +1,348 @@
+definitions:
+  model.ChangeEmployee:
+    properties:
+      assignedto:
+        $ref: '#/definitions/model.Employee'
+      title:
+        type: string
+    type: object
+  model.Employee:
+    properties:
+      email:
+        type: string
+      fullname:
+        type: string
+    type: object
+  model.FilterSubtask:
+    properties:
+      subtask:
+        $ref: '#/definitions/model.SubTask'
+      title:
+        type: string
+    type: object
+  model.SubTask:
+    properties:
+      status:
+        type: string
+      title:
+        type: string
+    type: object
+  model.TaskInfo:
+    properties:
+      assignedto:
+        $ref: '#/definitions/model.Employee'
+      description:
+        type: string
+      duedate:
+        type: string
+      status:
+        type: string
+      subtasks:
+        items:
+          $ref: '#/definitions/model.SubTask'
+        type: array
+      title:
+        type: string
+    type: object
+  model.TaskResponse:
+    properties:
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This swagger UI was created to manage client tasks
+  title: 'Project: TASKS'
+  version: "1.0"
+paths:
+  /tasks:
+    post:
+      consumes:
+      - application/json
+      description: This method creates Multiple Tasks
+      parameters:
+      - description: Tasks
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/model.TaskInfo'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Tasks added succesfully .
+          schema:
+            $ref: '#/definitions/model.TaskResponse'
+        "400":
+          description: 'Invalid Request: incorrect tasks information !!'
+          schema: {}
+        "403":
+          description: Unauthorized access
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Create Multiple Tasks
+      tags:
+      - TASK
+  /tasks/date/{date}:
+    delete:
+      description: This method is responsible to Delete  All  Completed tasks by given
+        date
+      parameters:
+      - description: Date
+        in: path
+        name: date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: All expiredtasks  deleted  succesfully  By DATE.
+          schema:
+            $ref: '#/definitions/model.TaskResponse'
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied: Unable to Delete tasks  in MongoDB !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Delete  all  expired tasks
+      tags:
+      - TASK
+    get:
+      description: This method is responsible to get  All Tasks Before The Given Date
+      parameters:
+      - description: Date
+        in: path
+        name: date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.TaskInfo'
+            type: array
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied: Unable To Find tasks in MongoDB !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Get All Tasks By Date
+      tags:
+      - TASK
+  /tasks/email/{email}:
+    delete:
+      description: This method is responsible to Delete  All  tasks by assigned employee's
+        email
+      parameters:
+      - description: Employee Email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: All tasks  deleted  succesfully  for employee.
+          schema:
+            $ref: '#/definitions/model.TaskResponse'
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied: Unable to Delete tasks  in MongoDB !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Delete  clients  tasks
+      tags:
+      - TASK
+    get:
+      description: This method is responsible to get Clients All Tasks by employee
+        email
+      parameters:
+      - description: Employee Email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.TaskInfo'
+            type: array
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied: Unable To Find tasks in MongoDB !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Get Client Tasks
+      tags:
+      - TASK
+  /tasks/employee:
+    put:
+      consumes:
+      - application/json
+      description: This method is responsible to update  assigned employee  od the
+        task
+      parameters:
+      - description: Employee
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.ChangeEmployee'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Responsible Employee Changed  succesfully .
+          schema:
+            $ref: '#/definitions/model.TaskResponse'
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied: Unable To update employee  in MongoDB !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Update  employee of the task
+      tags:
+      - TASK
+  /tasks/subtasks:
+    delete:
+      consumes:
+      - application/json
+      description: This method is responsible to Delete  Subtasks of the task by status
+      parameters:
+      - description: Subtask
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.FilterSubtask'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Subtask deleted  succesfully .
+          schema:
+            $ref: '#/definitions/model.TaskResponse'
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied: Unable to Delete subtask  in MongoDB !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Delete  Subtasks of the task
+      tags:
+      - TASK
+    put:
+      consumes:
+      - application/json
+      description: This method is responsible to Add new Subtasks to task
+      parameters:
+      - description: Subtask
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.FilterSubtask'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: New Subtask added  succesfully .
+          schema:
+            $ref: '#/definitions/model.TaskResponse'
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied: Unable To add new Subtask  in MongoDB !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Update  Subtasks of the task
+      tags:
+      - TASK
+  /tasks/subtasks/pending:
+    get:
+      description: This method is responsible to get  All subtasks Whch is not finished
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.TaskInfo'
+            type: array
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied: Unable To Find tasks in MongoDB !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Get  SubtasksTasks by Specific Criteria
+      tags:
+      - TASK
+  /tasks/subtasks/status:
+    put:
+      consumes:
+      - application/json
+      description: This method is responsible to update  subtask's status by task
+        title
+      parameters:
+      - description: Subtask
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.FilterSubtask'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Subtask status updated succesfully .
+          schema:
+            $ref: '#/definitions/model.TaskResponse'
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied: Unable To update subtasks status  in MongoDB
+            !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Update  Subtask's status
+      tags:
+      - TASK
+swagger: "2.0"

@@ -1,0 +1,533 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This swagger UI was created to manage client tasks",
+        "title": "Project: TASKS",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/tasks": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "This method creates Multiple Tasks",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TASK"
+                ],
+                "summary": "Create Multiple Tasks",
+                "parameters": [
+                    {
+                        "description": "Tasks",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.TaskInfo"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Tasks added succesfully .",
+                        "schema": {
+                            "$ref": "#/definitions/model.TaskResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request: incorrect tasks information !!",
+                        "schema": {}
+                    },
+                    "403": {
+                        "description": "Unauthorized access",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/tasks/date/{date}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "This method is responsible to get  All Tasks Before The Given Date",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TASK"
+                ],
+                "summary": "Get All Tasks By Date",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Date",
+                        "name": "date",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.TaskInfo"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized access",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Request Denied: Unable To Find tasks in MongoDB !",
+                        "schema": {}
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "This method is responsible to Delete  All  Completed tasks by given date",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TASK"
+                ],
+                "summary": "Delete  all  expired tasks",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Date",
+                        "name": "date",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "All expiredtasks  deleted  succesfully  By DATE.",
+                        "schema": {
+                            "$ref": "#/definitions/model.TaskResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized access",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Request Denied: Unable to Delete tasks  in MongoDB !",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/tasks/email/{email}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "This method is responsible to get Clients All Tasks by employee email",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TASK"
+                ],
+                "summary": "Get Client Tasks",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Employee Email",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.TaskInfo"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized access",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Request Denied: Unable To Find tasks in MongoDB !",
+                        "schema": {}
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "This method is responsible to Delete  All  tasks by assigned employee's email",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TASK"
+                ],
+                "summary": "Delete  clients  tasks",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Employee Email",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "All tasks  deleted  succesfully  for employee.",
+                        "schema": {
+                            "$ref": "#/definitions/model.TaskResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized access",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Request Denied: Unable to Delete tasks  in MongoDB !",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/tasks/employee": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "This method is responsible to update  assigned employee  od the task",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TASK"
+                ],
+                "summary": "Update  employee of the task",
+                "parameters": [
+                    {
+                        "description": "Employee",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ChangeEmployee"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Responsible Employee Changed  succesfully .",
+                        "schema": {
+                            "$ref": "#/definitions/model.TaskResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized access",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Request Denied: Unable To update employee  in MongoDB !",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/tasks/subtasks": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "This method is responsible to Add new Subtasks to task",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TASK"
+                ],
+                "summary": "Update  Subtasks of the task",
+                "parameters": [
+                    {
+                        "description": "Subtask",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.FilterSubtask"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "New Subtask added  succesfully .",
+                        "schema": {
+                            "$ref": "#/definitions/model.TaskResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized access",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Request Denied: Unable To add new Subtask  in MongoDB !",
+                        "schema": {}
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "This method is responsible to Delete  Subtasks of the task by status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TASK"
+                ],
+                "summary": "Delete  Subtasks of the task",
+                "parameters": [
+                    {
+                        "description": "Subtask",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.FilterSubtask"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Subtask deleted  succesfully .",
+                        "schema": {
+                            "$ref": "#/definitions/model.TaskResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized access",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Request Denied: Unable to Delete subtask  in MongoDB !",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/tasks/subtasks/pending": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "This method is responsible to get  All subtasks Whch is not finished",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TASK"
+                ],
+                "summary": "Get  SubtasksTasks by Specific Criteria",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.TaskInfo"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized access",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Request Denied: Unable To Find tasks in MongoDB !",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/tasks/subtasks/status": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "This method is responsible to update  subtask's status by task title",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TASK"
+                ],
+                "summary": "Update  Subtask's status",
+                "parameters": [
+                    {
+                        "description": "Subtask",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.FilterSubtask"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Subtask status updated succesfully .",
+                        "schema": {
+                            "$ref": "#/definitions/model.TaskResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized access",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Request Denied: Unable To update subtasks status  in MongoDB !",
+                        "schema": {}
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.ChangeEmployee": {
+            "type": "object",
+            "properties": {
+                "assignedto": {
+                    "$ref": "#/definitions/model.Employee"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Employee": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "fullname": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.FilterSubtask": {
+            "type": "object",
+            "properties": {
+                "subtask": {
+                    "$ref": "#/definitions/model.SubTask"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.SubTask": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.TaskInfo": {
+            "type": "object",
+            "properties": {
+                "assignedto": {
+                    "$ref": "#/definitions/model.Employee"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "duedate": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "subtasks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.SubTask"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.TaskResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
