@@ -1,0 +1,527 @@
+definitions:
+  model.Address:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      home_number:
+        type: string
+    type: object
+  model.Author:
+    properties:
+      age:
+        type: integer
+      contact:
+        $ref: '#/definitions/model.Contact'
+      fullname:
+        type: string
+    type: object
+  model.BookInfo:
+    properties:
+      author:
+        $ref: '#/definitions/model.Author'
+      category:
+        type: string
+      description:
+        type: string
+      isbn:
+        type: string
+      rentdetails:
+        $ref: '#/definitions/model.RentDetails'
+      title:
+        type: string
+    type: object
+  model.BookStatus:
+    properties:
+      status:
+        type: string
+      title:
+        type: string
+    type: object
+  model.ClientCode:
+    properties:
+      code:
+        type: integer
+      email:
+        type: string
+    type: object
+  model.ClientID:
+    properties:
+      id:
+        type: string
+    type: object
+  model.ClientInfo:
+    properties:
+      address:
+        $ref: '#/definitions/model.Address'
+      email:
+        type: string
+      fullname:
+        type: string
+      phone:
+        type: string
+      rentedbooks:
+        items:
+          $ref: '#/definitions/model.RentBook'
+        type: array
+    type: object
+  model.ClientLogin:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+    type: object
+  model.ClientToken:
+    properties:
+      status:
+        type: string
+      token:
+        type: string
+    type: object
+  model.Contact:
+    properties:
+      email:
+        type: string
+      facebook:
+        type: string
+    type: object
+  model.RentBook:
+    properties:
+      category:
+        type: string
+      duration:
+        type: integer
+      given_date:
+        type: string
+      price_day:
+        type: string
+      return_date:
+        type: string
+      title:
+        type: string
+    type: object
+  model.RentDetails:
+    properties:
+      price_day:
+        type: string
+      quantity:
+        type: integer
+      status:
+        type: string
+    type: object
+  model.Response:
+    properties:
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This swagger UI was created to manage LIBRARY
+  title: 'Project: LIBRARY'
+  version: "1.0"
+paths:
+  /books:
+    get:
+      description: This method Gets  Multiple Books From Database
+      parameters:
+      - description: Role
+        in: header
+        name: role
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.BookInfo'
+            type: array
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied : Unable to Get Books !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Gets Multiple Books
+      tags:
+      - BOOK
+    post:
+      consumes:
+      - application/json
+      description: This method addes Multiple Books to Database
+      parameters:
+      - description: Role
+        in: header
+        name: role
+        required: true
+        type: string
+      - description: Password
+        in: header
+        name: password
+        required: true
+        type: string
+      - description: Books
+        in: body
+        name: body
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/model.BookInfo'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: All Books Added Succesfully .
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: 'Invalid Request: incorrect book information !!'
+          schema: {}
+        "403":
+          description: Unauthorized access
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Create Multiple Books
+      tags:
+      - BOOK
+  /books/{isbn}:
+    delete:
+      description: This method Deletes   Book By ISBN  From Database
+      parameters:
+      - description: Role
+        in: header
+        name: role
+        required: true
+        type: string
+      - description: Password
+        in: header
+        name: password
+        required: true
+        type: string
+      - description: Book ISBN
+        in: path
+        name: isbn
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Book deleted succesfully .
+          schema:
+            $ref: '#/definitions/model.Response'
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied : Unable to Delete  Book !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Deletes   Book
+      tags:
+      - BOOK
+  /books/author/{author}:
+    get:
+      description: This method Gets  Multiple Books By AuthorsFrom Database
+      parameters:
+      - description: Role
+        in: header
+        name: role
+        required: true
+        type: string
+      - description: Book's  author name
+        in: path
+        name: author
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.BookInfo'
+            type: array
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied : Unable to Get Books !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Gets Multiple Books
+      tags:
+      - BOOK
+  /books/category/{category}:
+    get:
+      description: This method Gets  Multiple Books By category From Database
+      parameters:
+      - description: Role
+        in: header
+        name: role
+        required: true
+        type: string
+      - description: Book's category
+        in: path
+        name: category
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.BookInfo'
+            type: array
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied : Unable to Get Books !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Gets Multiple Books
+      tags:
+      - BOOK
+  /books/count:
+    get:
+      description: This method Counts  author 's  Book By ISBN  From Database
+      parameters:
+      - description: Role
+        in: header
+        name: role
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Book deleted succesfully .
+          schema:
+            $ref: '#/definitions/model.Response'
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied : Unable to Delete  Book !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Counts Autors   Book
+      tags:
+      - BOOK
+  /books/status:
+    put:
+      consumes:
+      - application/json
+      description: This method updates   Book's status  in Database
+      parameters:
+      - description: Role
+        in: header
+        name: role
+        required: true
+        type: string
+      - description: Password
+        in: header
+        name: password
+        required: true
+        type: string
+      - description: Book's Status
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.BookStatus'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Book' s status updated succesfully .
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: 'Invalid Request: incorrect book information !!'
+          schema: {}
+        "403":
+          description: Unauthorized access
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Updates   Book's status
+      tags:
+      - BOOK
+  /login:
+    get:
+      consumes:
+      - application/json
+      description: This method Verifies  Client's login And Returns Token  back
+      parameters:
+      - description: Role
+        in: header
+        name: role
+        required: true
+        type: string
+      - description: Client Login
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.ClientLogin'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.ClientToken'
+        "400":
+          description: Invalid Request
+          schema: {}
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "404":
+          description: 'Client ID not found:   Sign Up  .'
+          schema: {}
+        "500":
+          description: Request denied !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: LOGIN
+      tags:
+      - AUTH
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: This method registers New Clients
+      parameters:
+      - description: Role
+        in: header
+        name: role
+        required: true
+        type: string
+      - description: client Information
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.ClientInfo'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Confirm the code we have sent to your Email !
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Invalid Request
+          schema: {}
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: Request denied !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Register New Client
+      tags:
+      - AUTH
+  /rent:
+    post:
+      consumes:
+      - application/json
+      description: This method assign  Rented Books to Client
+      parameters:
+      - description: Role
+        in: header
+        name: role
+        required: true
+        type: string
+      - description: Client ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Rented Book
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.RentBook'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Rented book added to client succesfully .
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: 'Invalid Request: incorrect book information !!'
+          schema: {}
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: 'Request Denied : Unable to Add RentedBook to Client !'
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Addes Rented Books
+      tags:
+      - RENT
+  /verification:
+    post:
+      consumes:
+      - application/json
+      description: This method Verifies  Client's Code And sends ID back
+      parameters:
+      - description: Role
+        in: header
+        name: role
+        required: true
+        type: string
+      - description: Client Code
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.ClientCode'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.ClientID'
+        "400":
+          description: Invalid Request
+          schema: {}
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: Request denied !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Confirm Client's Code
+      tags:
+      - AUTH
+swagger: "2.0"
