@@ -1,0 +1,6 @@
+p, admin, /admin/register, POST
+p, admin, /admin/update/:id, PUT
+p, admin, /admin/delete/:id, DELETE
+p, staff, /order/create, POST
+p, staff, /order/fire, POST
+p, staff, /order/status, GET

@@ -1,0 +1,382 @@
+definitions:
+  model.Dessert:
+    properties:
+      coffee:
+        additionalProperties:
+          type: integer
+        type: object
+      dessert:
+        additionalProperties:
+          type: integer
+        type: object
+      status:
+        type: string
+    type: object
+  model.Drink:
+    properties:
+      drink:
+        additionalProperties:
+          type: integer
+        type: object
+      status:
+        type: string
+    type: object
+  model.EmployeeInfo:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+    type: object
+  model.EmployeeResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  model.FireCourse:
+    properties:
+      course:
+        type: string
+      tableNumber:
+        type: integer
+      time:
+        type: string
+      waiter:
+        type: string
+    type: object
+  model.GetStatus:
+    properties:
+      course:
+        type: string
+      tableNumber:
+        type: integer
+    type: object
+  model.GuestOrder:
+    properties:
+      dessert:
+        $ref: '#/definitions/model.Dessert'
+      drink:
+        $ref: '#/definitions/model.Drink'
+      main:
+        $ref: '#/definitions/model.Main'
+      pizza:
+        $ref: '#/definitions/model.Pizza'
+      starter:
+        $ref: '#/definitions/model.Starter'
+      tableNumber:
+        type: integer
+      time:
+        type: string
+      totalGuest:
+        type: integer
+      waiter:
+        type: string
+    type: object
+  model.Main:
+    properties:
+      meal:
+        additionalProperties:
+          type: integer
+        type: object
+      status:
+        type: string
+    type: object
+  model.Pizza:
+    properties:
+      pizza:
+        additionalProperties:
+          type: integer
+        type: object
+      status:
+        type: string
+    type: object
+  model.Starter:
+    properties:
+      salads:
+        additionalProperties:
+          type: integer
+        type: object
+      status:
+        type: string
+    type: object
+  model.StatusResponse:
+    properties:
+      course:
+        type: string
+      status:
+        type: string
+      tableNumber:
+        type: integer
+    type: object
+host: localhost:8888
+info:
+  contact:
+    email: ali.team@gmail.com
+  description: This swagger UI was created to manage Restaurant operation
+  title: 'Project: RESTAURANT MANAGEMENT'
+  version: "1.0"
+paths:
+  /admin/delete/:id:
+    delete:
+      consumes:
+      - application/json
+      description: This method is responsible for Deleting    Employee Information
+      parameters:
+      - description: Role
+        in: header
+        name: id
+        required: true
+        type: string
+      - description: Password
+        in: header
+        name: password
+        required: true
+        type: string
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Response
+          schema:
+            $ref: '#/definitions/model.EmployeeResponse'
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: Unable to Delete  Employee  ! Try again later !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Deletes  Employee Information
+      tags:
+      - REGISTRATION
+  /admin/register:
+    post:
+      consumes:
+      - application/json
+      description: This method is responsible for Registering   New Employees
+      parameters:
+      - description: Role
+        in: header
+        name: id
+        required: true
+        type: string
+      - description: Password
+        in: header
+        name: password
+        required: true
+        type: string
+      - description: Employee Details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.EmployeeInfo'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: New employee registered
+          schema:
+            $ref: '#/definitions/model.EmployeeInfo'
+        "400":
+          description: Incorrect Employee Information !
+          schema: {}
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: Failed Registering New Employee !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Registers New Employee
+      tags:
+      - REGISTRATION
+  /admin/update/:id:
+    put:
+      consumes:
+      - application/json
+      description: This method is responsible for Updating    Employee Information
+      parameters:
+      - description: Role
+        in: header
+        name: id
+        required: true
+        type: string
+      - description: Password
+        in: header
+        name: password
+        required: true
+        type: string
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Employee Details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.EmployeeInfo'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Response
+          schema:
+            $ref: '#/definitions/model.EmployeeResponse'
+        "400":
+          description: Incorrect Employee Information !
+          schema: {}
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: Unable to Update employee info ! Try again later !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Updates  Employee Information
+      tags:
+      - REGISTRATION
+  /order/create:
+    post:
+      consumes:
+      - application/json
+      description: This method is responsible for creating guest  orders and sends
+        to kitchen
+      parameters:
+      - description: Employee ID
+        in: header
+        name: id
+        required: true
+        type: string
+      - description: Password
+        in: header
+        name: password
+        required: true
+        type: string
+      - description: Order Details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.GuestOrder'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 'Order accepted . '
+          schema:
+            type: string
+        "400":
+          description: Incorrect Order Details !",
+          schema: {}
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: Unable to Send  an Order To kitchen !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Creates Guest Orders
+      tags:
+      - ORDER
+  /order/fire:
+    get:
+      consumes:
+      - application/json
+      description: This method is responsible for getting  guest  orders  status
+      parameters:
+      - description: Employee ID
+        in: header
+        name: id
+        required: true
+        type: string
+      - description: Password
+        in: header
+        name: password
+        required: true
+        type: string
+      - description: Course Details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.GetStatus'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Status Details
+          schema:
+            $ref: '#/definitions/model.StatusResponse'
+        "400":
+          description: Incorrect  Course information !",
+          schema: {}
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: Unable to get status information !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Gets  Order Status
+      tags:
+      - ORDER
+    post:
+      consumes:
+      - application/json
+      description: This method is responsible for firing guest  orders  courses
+      parameters:
+      - description: Employee ID
+        in: header
+        name: id
+        required: true
+        type: string
+      - description: Password
+        in: header
+        name: password
+        required: true
+        type: string
+      - description: Fire Details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.FireCourse'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 'Fire Course accepted . '
+          schema:
+            type: string
+        "400":
+          description: Incorrect  FireCourse information !
+          schema: {}
+        "403":
+          description: Unauthorized access
+          schema: {}
+        "500":
+          description: Unable to Send  fire course to kitchen !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Fires  Order course
+      tags:
+      - ORDER
+swagger: "2.0"
