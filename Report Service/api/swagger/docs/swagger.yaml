@@ -1,0 +1,347 @@
+definitions:
+  model.EmployeeDetail:
+    properties:
+      fullname:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      tvChannel:
+        type: string
+    type: object
+  model.EmployeeID:
+    properties:
+      id:
+        type: string
+      status:
+        type: string
+    type: object
+  model.EmployeeToken:
+    properties:
+      token:
+        type: string
+    type: object
+  model.ReportDetails:
+    properties:
+      about:
+        type: string
+      channel:
+        type: string
+      date:
+        type: string
+      reporter:
+        type: string
+      title:
+        type: string
+    type: object
+  model.ReportFilter:
+    properties:
+      filterName:
+        type: string
+      filterValue:
+        type: string
+    type: object
+  model.ReportStatus:
+    properties:
+      status:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This swagger UI was created to manage Reports
+  title: 'Project: Report Service'
+  version: "1.0"
+paths:
+  /employees/login:
+    get:
+      description: This method is responsible for managing   employees login
+      parameters:
+      - description: ID
+        in: header
+        name: id
+        required: true
+        type: string
+      - description: Password
+        in: header
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.EmployeeToken'
+        "400":
+          description: 'Login Failed : Invalid ID or Password !'
+          schema: {}
+        "500":
+          description: Unable to procces login!
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: "Employee \t\tLogin"
+      tags:
+      - EMPLOYEE
+  /employees/register:
+    post:
+      consumes:
+      - application/json
+      description: This method is responsible for registering new  employees
+      parameters:
+      - description: Employee Details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.EmployeeDetail'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.EmployeeID'
+        "400":
+          description: Invalid employee details !
+          schema: {}
+        "500":
+          description: Unable to register  new employee!
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Registers   New Employees
+      tags:
+      - EMPLOYEE
+  /reports:
+    get:
+      description: This method is responsible for getting all  reports
+      parameters:
+      - description: Reporter Token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.ReportDetails'
+            type: array
+        "403":
+          description: Permission Denied !
+          schema: {}
+        "404":
+          description: There is No Reports Exists !
+          schema:
+            type: string
+        "500":
+          description: Unable to get all  reports details !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Gets All  Reports
+      tags:
+      - REPORT
+    post:
+      consumes:
+      - application/json
+      description: This method is responsible for creating  reports
+      parameters:
+      - description: Reporter Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Report Details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.ReportDetails'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Request Accepted ..
+          schema:
+            type: string
+        "400":
+          description: Invalid report details !
+          schema: {}
+        "403":
+          description: Permission Denied !
+          schema: {}
+        "500":
+          description: Unable to publish report details !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Creates  Reports
+      tags:
+      - REPORT
+  /reports/:id:
+    delete:
+      description: This method is responsible for deleting  reports
+      parameters:
+      - description: Reporter Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Report ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Request Accepted ..
+          schema:
+            type: string
+        "403":
+          description: Permission Denied !
+          schema: {}
+        "500":
+          description: Unable to publish report details !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Deletes  Reports
+      tags:
+      - REPORT
+    put:
+      consumes:
+      - application/json
+      description: This method is responsible for updates  reports
+      parameters:
+      - description: Reporter Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Report ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Report Details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.ReportDetails'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Request Accepted ..
+          schema:
+            type: string
+        "400":
+          description: Invalid report details !
+          schema: {}
+        "403":
+          description: Permission Denied !
+          schema: {}
+        "500":
+          description: Unable to publish report details !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Updates  Reports
+      tags:
+      - REPORT
+  /reports/search:
+    get:
+      consumes:
+      - application/json
+      description: This method is responsible for getting Multiple  reports by filter
+      parameters:
+      - description: Reporter Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Filter details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.ReportFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.ReportDetails'
+            type: array
+        "403":
+          description: Permission Denied !
+          schema: {}
+        "404":
+          description: There is No Reports Exists !
+          schema:
+            type: string
+        "500":
+          description: Unable to get  reports details  by filter!
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Gets  multiple  Reports
+      tags:
+      - REPORT
+  /reports/status/:id:
+    get:
+      description: This method is responsible for getting Multiple  report's statuses
+        by ID
+      parameters:
+      - description: Reporter Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: Report  ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.ReportStatus'
+            type: array
+        "403":
+          description: Permission Denied !
+          schema: {}
+        "404":
+          description: There is No Reports status Exists !
+          schema:
+            type: string
+        "500":
+          description: Unable to get  reports statuses !
+          schema: {}
+      security:
+      - BearerAuth: []
+      summary: Gets  multiple  Report's  statuses
+      tags:
+      - REPORT
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

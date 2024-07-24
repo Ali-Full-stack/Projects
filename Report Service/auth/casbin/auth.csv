@@ -1,0 +1,13 @@
+p, admin, /reports/:id , PUT
+p, admin, /reports/:ID , DELETE
+p, admin, /reports, POST
+p, admin, /reports , GET
+p, admin, /reports/search , GET
+p, admin, /reports/status, GET
+
+p, reporter, /reports/status, GET
+p, reporter, /reports, POST
+p, reporter, /reports , GET
+p, reporter, /reports/search , GET
+
+
