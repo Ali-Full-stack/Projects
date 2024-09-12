@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS files (
+    id VARCHAR(255) PRIMARY KEY,
+    path  VARCHAR(255) NOT NULL,
+    name VARCHAR(65) UNIQUE,
+    data  BYTEA NOT NULL,
+    created_at VARCHAR(255) NOT NULL
+);
